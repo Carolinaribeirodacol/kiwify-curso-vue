@@ -1,24 +1,39 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { computed, reactive, ref } from 'vue'
 
-const person = ref({
-  name: 'John Doe',
-  age: 30
+const mentor = reactive({
+  nome: 'John Doe',
+  modulos: [
+    'Modulo 1',
+    'Modulo 2',
+    'Modulo 3'
+  ]
 })
 
-const state = reactive({
-  count: 0
+const mentor2 = ref({
+  nome: 'John Doe',
+  modulos: []
 })
-// const count = ref(0)
-// console.log(count.value)
+
+const possuiModulos = computed(() => {
+  return mentor.modulos.length > 0
+})
+
+const possuiModulos2 = computed(() => {
+  return mentor2.value.modulos.length > 0
+})
 </script>
 
 <template>
-  <!-- <div>{{ count }}</div> -->
-  <div>{{ state.count }}</div>
-  <input type="text" v-model="person.name"/>
-  <button @click="count++">Increment</button>
+<div>
+  <h3>mentor: {{ mentor.nome }}</h3>
+  <p>
+    Possui módulos ativos: {{ possuiModulos }}
+  </p>
 
-  <p>Ref precisa acessar com .value dentro do script</p>
-  <p>Reactive é para objetos ou arrays</p>
+  <h3>mentor2: {{ mentor2.nome }}</h3>
+  <p>
+    Possui módulos ativos: {{ possuiModulos2 }}
+  </p>
+</div>
 </template>
