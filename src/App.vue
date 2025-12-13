@@ -1,5 +1,6 @@
 <script setup>
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, ref, onMounted } from 'vue'
+import MeuComponente from './components/MeuComponente.vue'
 
 const mentor = reactive({
   nome: 'John Doe',
@@ -22,6 +23,12 @@ const possuiModulos = computed(() => {
 const possuiModulos2 = computed(() => {
   return mentor2.value.modulos.length > 0
 })
+
+const mostrarComponente = ref(false)
+
+onMounted(() => {
+  console.log('onMounted PAI')
+})
 </script>
 
 <template>
@@ -35,5 +42,8 @@ const possuiModulos2 = computed(() => {
   <p>
     Possui módulos ativos: {{ possuiModulos2 }}
   </p>
+
+  <button @click="mostrarComponente = !mostrarComponente">Mostrar componente</button>
+  <MeuComponente v-if="mostrarComponente"/>
 </div>
 </template>
