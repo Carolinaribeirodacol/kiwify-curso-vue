@@ -1,49 +1,30 @@
 <script setup>
-import { computed, reactive, ref, onMounted } from 'vue'
-import MeuComponente from './components/MeuComponente.vue'
+import { ref , watch, watchEffect } from 'vue'
 
-const mentor = reactive({
-  nome: 'John Doe',
-  modulos: [
-    'Modulo 1',
-    'Modulo 2',
-    'Modulo 3'
-  ]
+const inputName = ref('')
+const usuario = ref('')
+const data = ref(null)
+
+function setName() {
+  usuario.value = inputName.value
+}
+
+watch(usuario, (newValue, oldValue) => {
+  console.log('Valor antigo', oldValue)
+  console.log('Valor novo', newValue)
 })
 
-const mentor2 = ref({
-  nome: 'John Doe',
-  modulos: []
-})
+watchEffect(async () => {
+  const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${usuario.value}`)
 
-const possuiModulos = computed(() => {
-  return mentor.modulos.length > 0
-})
-
-const possuiModulos2 = computed(() => {
-  return mentor2.value.modulos.length > 0
-})
-
-const mostrarComponente = ref(false)
-
-onMounted(() => {
-  console.log('onMounted PAI')
+  data.value = await response.json()
+  console.log(response)
 })
 </script>
 
 <template>
-<div>
-  <h3>mentor: {{ mentor.nome }}</h3>
-  <p>
-    Possui módulos ativos: {{ possuiModulos }}
-  </p>
-
-  <h3>mentor2: {{ mentor2.nome }}</h3>
-  <p>
-    Possui módulos ativos: {{ possuiModulos2 }}
-  </p>
-
-  <button @click="mostrarComponente = !mostrarComponente">Mostrar componente</button>
-  <MeuComponente v-if="mostrarComponente"/>
-</div>
+  <div>
+    <input type="text" v-model="inputName">
+    <button @click="setName">Enviar nome</button>
+  </div>
 </template>
